@@ -126,6 +126,7 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 				Integer.parseInt(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_TAILLE_SAISIE_IP")));
 		this.texteIP.setEditable(true);
 		this.texteIP.requestFocus();
+		this.texteIP.setName(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_SAISIE_IP"));
 		this.panIPPort.add(this.texteIP);
 
 		/* Saisie du port. */
@@ -134,6 +135,7 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 		this.textePort.setColumns(
 				Integer.parseInt(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_TAILLE_SAISIE_PORT")));
 		this.textePort.setEditable(true);
+		this.textePort.setName(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_SAISIE_PORT"));
 		this.panIPPort.add(this.textePort);
 
 		/* Messages de connexion. */
