@@ -21,9 +21,8 @@ import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 
-import felix.communication.Connexion;
+import felix.Felix;
 import felix.controleur.ControleurFelix;
-import felix.vue.Fenetre;
 import felix.vue.VueConnexion;
 
 @RunWith(Parameterized.class)
@@ -46,7 +45,7 @@ public class FelixTestConnexionImpossible {
 	private ControleurFelix controleurFelix;
 
 	/**
-	 * Configuration des parametres injectés lors de l'appel aux tests
+	 * Configuration des parametres injectï¿½s lors de l'appel aux tests
 	 * @return
 	 */
 	@Parameters
@@ -71,12 +70,12 @@ public class FelixTestConnexionImpossible {
 		JemmyProperties.setCurrentTimeout("FrameWaiter.WaitFrameTimeout", timeout);
 		JemmyProperties.setCurrentTimeout("ComponentOperator.WaitStateTimeout", timeout);
 
-		// Création d'un mock de contrôleur.
+		// Crï¿½ation d'un mock de contrï¿½leur.
 		this.controleurFelix = EasyMock.createMock(ControleurFelix.class);
 		Assert.assertNotNull(this.controleurFelix);
 
-		// Création de la vue nécessaire aux tests.
-		// La vue s'appuie sur le mock de contrôleur.
+		// Crï¿½ation de la vue nï¿½cessaire aux tests.
+		// La vue s'appuie sur le mock de contrï¿½leur.
 		this.vueConnexion = new VueConnexion(controleurFelix);
 		Assert.assertNotNull(this.vueConnexion);
 
@@ -87,12 +86,12 @@ public class FelixTestConnexionImpossible {
 
 	private void recuperationVue(){
 		// TODO Auto-generated method stub
-		// Index pour la récupération des widgets.
+		// Index pour la rï¿½cupï¿½ration des widgets.
 		Integer index = 0;
 
-		// Récupération de la fenêtre de la vue de la caisse (par son titre).
+		// Rï¿½cupï¿½ration de la fenï¿½tre de la vue de la caisse (par son titre).
 		this.fenetre = new JFrameOperator(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_TITRE"));
-		Assert.assertNotNull("La fenêtre de la vue caisse n'est pas accessible.", this.fenetre);
+		Assert.assertNotNull("La fenï¿½tre de la vue caisse n'est pas accessible.", this.fenetre);
 
 		this.adresseTextField = new JTextFieldOperator(this.fenetre, index++);
 		Assert.assertNotNull("Le champ de saisie de l'adresse n'est pas accessible.", this.adresseTextField);
