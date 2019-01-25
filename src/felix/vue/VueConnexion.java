@@ -143,6 +143,7 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 		this.texteMessages.setPreferredSize(new Dimension(largeur - mLargeur, hMessage));
 		this.texteMessages.setHorizontalAlignment(JTextField.LEFT);
 		this.texteMessages.setEditable(false);
+		this.texteMessages.setName(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_NOM"));
 		this.texteMessages.setFocusable(false);
 		this.panMessages.add(this.texteMessages);
 
