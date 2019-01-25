@@ -19,14 +19,14 @@ import felix.controleur.VueFelix;
 
 /**
  * Classe de la vue connexion de Felix.
- * 
+ *
  * Cette vue permet d'initier une connexion au chat.
- * 
+ *
  * Cette vue est une vue active : elle possède une méthode de connexion
  * qui lance un thread de connexion au chat.
- *  
+ *
  * @version 4.0
- * @author Matthias Brun 
+ * @author Matthias Brun
  *
  */
 public class VueConnexion extends VueFelix implements ActionListener, Runnable
@@ -40,7 +40,7 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 	 * Le conteneur de la vue.
 	 */
 	private Container contenu;
-	
+
 	/**
 	 * Les panneaux de la vue.
 	 */
@@ -50,32 +50,32 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 	 * Les champs texte pour l'adresse IP et les messages.
 	 */
 	private JTextField texteIP, texteMessages;
-	
+
 	/**
 	 * Le champs texte formaté du port de la vue.
 	 */
 	private JFormattedTextField textePort;
-	
+
 	/**
 	 * Le bouton connecter de la vue.
 	 */
 	private JButton boutonConnecter;
-	
+
 	/**
 	 * Constructeur de la vue chat.
-	 * 
+	 *
 	 * @param controleur le contrôleur du chat auquel appartient la vue.
 	 */
-	public VueConnexion(ControleurFelix controleur) 
+	public VueConnexion(ControleurFelix controleur)
 	{
 		super(controleur);
-		
+
 		final Integer largeur = Integer.parseInt(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_LARGEUR"));
 		final Integer hauteur = Integer.parseInt(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_HAUTEUR"));
-		
+
 		this.fenetre = new Fenetre(largeur, hauteur, Felix.CONFIGURATION.getString("FENETRE_CONNEXION_TITRE"));
-		
-		this.construireFenetre(largeur, hauteur);	
+
+		this.construireFenetre(largeur, hauteur);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 		this.construirePanneaux();
 		this.construireControles(largeur, hauteur);
 	}
-	
+
 	/**
 	 * Construire les panneaux de la fenêtre.
 	 *
@@ -101,7 +101,7 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 
 		this.panIPPort = new JPanel();
 		this.contenu.add(this.panIPPort);
-		
+
 		this.panMessages = new JPanel();
 		this.contenu.add(this.panMessages);
 
@@ -111,7 +111,7 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 
 	/**
 	 * Construire les widgets de contrôle de la fenêtre.
-	 * 
+	 *
 	 * @param largeur la largeur de la fenêtre.
 	 * @param hauteur la hauteur de la fenêtre.
 	 *
@@ -121,13 +121,13 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 		final Integer mLargeur = Integer.parseInt(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MARGE_LARGEUR"));
 		final Integer hMessage = Integer.parseInt(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_HAUTEUR_MESSAGE"));
 
-		/* Saisie de l'IP. */	
-		this.texteIP = new JTextField(Felix.CONFIGURATION.getString("ADRESSE_CHAT"), 
+		/* Saisie de l'IP. */
+		this.texteIP = new JTextField(Felix.CONFIGURATION.getString("ADRESSE_CHAT"),
 				Integer.parseInt(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_TAILLE_SAISIE_IP")));
 		this.texteIP.setEditable(true);
 		this.texteIP.requestFocus();
 		this.panIPPort.add(this.texteIP);
-		
+
 		/* Saisie du port. */
 		this.textePort = new JFormattedTextField(NumberFormat.getIntegerInstance());
 		this.textePort.setValue(Integer.parseInt(Felix.CONFIGURATION.getString("PORT_CHAT")));
@@ -143,7 +143,7 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 		this.texteMessages.setEditable(false);
 		this.texteMessages.setFocusable(false);
 		this.panMessages.add(this.texteMessages);
-	
+
 		/* Bouton de connexion */
 		this.boutonConnecter = new JButton(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_BOUTON_CONNECTER"));
 		this.boutonConnecter.addActionListener(this);
@@ -161,17 +161,17 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 	{
 		try {
 			if (ev.getSource() == this.boutonConnecter) {
-				
+
 				this.texteMessages.setText(String.format(
-					Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), 
-					this.texteIP.getText().trim(), 
+					Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"),
+					this.texteIP.getText().trim(),
 					((Number) this.textePort.getValue()).toString()));
-							
+
 				this.boutonConnecter.setEnabled(false);
-				
+
 				/* Initiation de la connexion. */
 				new Thread(this).start();
-				
+
 			} else {
 				/* Évènement inconnu. */
 				System.err.println("Réception d'un évènement inconnu sur la vue connexion.");
@@ -182,58 +182,58 @@ public class VueConnexion extends VueFelix implements ActionListener, Runnable
 			System.err.println("Format invalide dans le champ port de la vue connexion.");
 		}
 	}
-	
+
 	/**
 	 * Point d'entrée du thread de connexion au chat.
 	 */
 	@Override
-	public void run() 
+	public void run()
 	{
 		try {
 			Thread.sleep(500);
 			this.donneControleur().connecteCamix(
 					this.texteIP.getText().trim(), ((Number) this.textePort.getValue()).intValue());
-			
+
 		} catch (IOException | InterruptedException e) {
 			afficheConnexionImpossible();
 		} finally {
 			this.boutonConnecter.setEnabled(true);
 		}
 	}
-	
+
 	/**
 	 * Affichage du message de connexion impossible.
-	 * 
+	 *
 	 */
 	private void afficheConnexionImpossible()
 	{
 		this.texteMessages.setText(String.format(
-				Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION_IMPOSSIBLE"), 
-					this.texteIP.getText().trim(), 
+				Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION_IMPOSSIBLE"),
+					this.texteIP.getText().trim(),
 					((Number) this.textePort.getValue()).toString()));
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see felix.controleur.VueFelix
 	 */
 	@Override
-	public void affiche() 
+	public void affiche()
 	{
 		this.fenetre.setVisible(true);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see felix.controleur.VueFelix
 	 */
 	@Override
-	public void ferme() 
+	public void ferme()
 	{
 		this.fenetre.dispose();
 	}
 
-	
+
 }
