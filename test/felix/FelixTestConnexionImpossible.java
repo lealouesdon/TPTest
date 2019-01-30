@@ -25,6 +25,7 @@ import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.util.NameComponentChooser;
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 import felix.communication.Connexion;
 import felix.controleur.ControleurFelix;
@@ -117,27 +118,39 @@ public class FelixTestConnexionImpossible {
 
 
 	@Test
-	public void testConnexion001() throws InterruptedException {
+	public void testConnexionSansModification() throws InterruptedException {
 		// ATTENTION A GERER LA COHERENCE DE L AFFICHAGE DES FENETRE avec l'ouverture de tchat si ca fail
-		sleep(2);
 		connexionButton.clickMouse();
-		assertTrue(messageTextField.getText().equals(String.format(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), Felix.CONFIGURATION.getString("ADRESSE_CHAT"), Felix.CONFIGURATION.getString("PORT_CHAT"))));
-		sleep(10);
+		sleep(2);
+		messageTextField.waitText(String.format(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), Felix.CONFIGURATION.getString("ADRESSE_CHAT"), Felix.CONFIGURATION.getString("PORT_CHAT")));
+		//assertTrue(messageTextField.getText().equals(String.format(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), Felix.CONFIGURATION.getString("ADRESSE_CHAT"), Felix.CONFIGURATION.getString("PORT_CHAT"))));
 	}
 
 	@Test
-	public void testConnexion002() throws InterruptedException {
+	public void testConnexionModificationIp() throws InterruptedException {
 		// ATTENTION A GERER LA COHERENCE DE L AFFICHAGE DES FENETRE avec l'ouverture de tchat si ca fail
-		//adresseTextField.enterText(params().);
-		sleep(2);
+		adresseTextField.enterText(ip);
+		//adresseTextField.waitText(ip);
 		connexionButton.clickMouse();
-		assertTrue(messageTextField.getText().equals(String.format(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), "127.0.0.1", "12345")));
-		sleep(10);
+		sleep(2);
+		messageTextField.waitText(String.format(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), ip, Felix.CONFIGURATION.getString("PORT_CHAT")));
+		//assertTrue(messageTextField.getText().equals(String.format(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), ip, port)));
 	}
+
+	/*@Test
+	public void testConnexionModificationPort() throws InterruptedException {
+		// ATTENTION A GERER LA COHERENCE DE L AFFICHAGE DES FENETRE avec l'ouverture de tchat si ca fail
+		adresseTextField.enterText(port);
+		//adresseTextField.waitText(ip);
+		connexionButton.clickMouse();
+		sleep(2);
+		messageTextField.waitText(String.format(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), ip, Felix.CONFIGURATION.getString("PORT_CHAT")));
+		//assertTrue(messageTextField.getText().equals(String.format(Felix.CONFIGURATION.getString("FENETRE_CONNEXION_MESSAGE_CONNEXION"), ip, port)));
+	}*/
 
 	private void sleep(int second){
 		try {
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(second);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
